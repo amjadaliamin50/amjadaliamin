@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amjad Amin | Neon Digital Agency</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <style>
+        :root {
+            --primary: #0a0a12; /* Deep space blue */
+            --secondary: #00f7ff; /* Cyber teal */
+            --accent: #ff2d75; /* Neon pink */
+            --accent2: #ffd700; /* Gold */
+            --text: #ffffff;
+            --text-secondary: #b8c2d8;
+            --glow: 0 0 15px rgba(0, 247, 255, 0.7);
+            --glow-pink: 0 0 15px rgba(255, 45, 117, 0.7);
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--primary);
+            color: var(--text);
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1, h2, h3, .navbar-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+        
+        /* Background Overlay */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(0, 247, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 45, 117, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: rgba(10, 10, 18, 0.9);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 247, 255, 0.2);
+        }
+        
+        .navbar-brand {
+            color: var(--secondary);
+            font-size: 1.8rem;
+            text-shadow: var(--glow);
+            letter-spacing: 2px;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            margin: 0 15px;
+            font-weight: 500;
+            position: relative;
+            letter-spacing: 1px;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--text);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 8%;
+        }
+        
+        .hero-title {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+        
+        .hero-subtitle strong {
+            color: var(--secondary);
+        }
+        
+        .btn-custom {
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
+            color: var(--primary);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.5);
+            letter-spacing: 1px;
+        }
+        
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--accent), var(--secondary));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .btn-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.8);
+        }
+        
+        .btn-custom:hover::before {
+            opacity: 1;
+        }
+        
+        .btn-outline-custom {
+            background: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.3);
+        }
+        
+        .btn-outline-custom:hover {
+            color: var(--primary);
+            background: var(--secondary);
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+        
+        /* Section Styling */
+        .section {
+            padding: 120px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            font-size: 3.5rem;
+            margin-bottom: 70px;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 2px;
+        }
+        
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+        }
+        
+        .about-text {
+            flex: 1;
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+        
+        .about-text p {
+            margin-bottom: 25px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .about-text p::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        .about-image {
+            flex: 1;
+            position: relative;
+            height: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0, 247, 255, 0.2);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+        }
+        
+        /* Services Section */
+        #services {
+            background: radial-gradient(ellipse at top, rgba(0, 247, 255, 0.03), transparent),
+                        radial-gradient(ellipse at bottom, rgba(255, 45, 117, 0.03), transparent);
+        }
+        
+        .service-card {
+            background: rgba(20, 20, 30, 0.7);
+            border: 1px solid rgba(0, 247, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px 30px;
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+            height: 100%;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
+            z-index: -1;
+            border-radius: 16px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 247, 255, 0.15);
+        }
+        
+        .service-card:hover::before {
+            opacity: 0.3;
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .service-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+        
+        .service-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .service-list li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 30px;
+            color: var(--text-secondary);
+        }
+        
+        .service-list li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+        
+        /* Portfolio Section */
+        .portfolio-item {
+            position: relative;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 247, 255, 0.3);
+        }
+        
+        .portfolio-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .portfolio-item:hover .portfolio-img {
+            transform: scale(1.1);
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(10, 10, 18, 0.9), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        
+        .portfolio-tag {
+            display: inline-block;
+            background: rgba(0, 247, 255, 0.15);
+            color: var(--secondary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(0, 247, 255, 0.3);
+        }
+        
+        /* Testimonials */
+        .testimonial-card {
+            background: rgba(20, 20, 30, 0.7);
+            border: 1px solid rgba(0, 247, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .testimonial-text::before,
+        .testimonial-text::after {
+            content: '"';
+            color: var(--secondary);
+            font-size: 2rem;
+            line-height: 1;
+        }
+        
+        .testimonial-text::before {
+            position: absolute;
+            top: -10px;
+            left: -15px;
+        }
+        
+        .testimonial-text::after {
+            vertical-align: bottom;
+            margin-left: 5px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid var(--secondary);
+        }
+        
+        /* Contact Section */
+        .contact-form .form-control {
+            background: rgba(20, 20, 30, 0.7);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            color: var(--text);
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .contact-form .form-control:focus {
+            background: rgba(20, 20, 30, 0.9);
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 0.25rem rgba(0, 247, 255, 0.25);
+            color: var(--text);
+        }
+        
+        .contact-info {
+            padding-left: 50px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: var(--primary);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .social-icons {
+            display: flex;
+            margin-top: 30px;
+        }
+        
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 247, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 247, 255, 0.2);
+        }
+        
+        .social-icon:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 247, 255, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 60px 0 30px;
+            background: rgba(10, 10, 18, 0.9);
+            position: relative;
+            border-top: 1px solid rgba(0, 247, 255, 0.1);
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            display: inline-block;
+            text-shadow: var(--glow);
+            letter-spacing: 3px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-link {
+            color: var(--text-secondary);
+            margin: 0 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+        
+        .footer-link:hover {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+        
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+        
+        /* Neon Border Effect */
+        .neon-border {
+            position: relative;
+        }
+        
+        .neon-border::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: inherit;
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .neon-border:hover::after {
+            opacity: 0.5;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .about-image {
+                width: 100%;
+                height: 400px;
+                margin-top: 50px;
+            }
+            
+            .contact-info {
+                padding-left: 0;
+                margin-top: 50px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 80px 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .btn-custom {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-link {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="100">
+    <!-- Background Overlay -->
+    <div class="bg-overlay"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">AMIN ONLINE SERVICES</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars" style="color: var(--secondary); font-size: 1.8rem;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#hero">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#portfolio">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">TRANSFORM YOUR DIGITAL PRESENCE</h1>
+                <p class="hero-subtitle">We create <strong>cutting-edge digital solutions</strong> that blend innovative technology with stunning design to elevate your brand in the digital space.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="#services" class="btn btn-custom">Our Services</a>
+                    <a href="#contact" class="btn btn-outline-custom">Get Started</a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">ABOUT OUR AGENCY</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Founded by <strong>Amjad Amin</strong>, Neon Digital is a premier online services agency specializing in creating immersive digital experiences that drive results.</p>
+                    <p>With our unique blend of technical expertise and creative vision, we help businesses establish a powerful online presence that stands out in today's competitive digital landscape.</p>
+                    <p>Our team of specialists combines cutting-edge technology with innovative design to deliver solutions that are not just visually stunning but also highly functional and user-friendly.</p>
+                    <p>We believe in building long-term partnerships with our clients, helping them navigate the digital world with confidence and achieve their business objectives.</p>
+                </div>
+                <div class="about-image neon-border">
+                    <div id="about-canvas" style="width: 100%; height: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <div class="container">
+            <h2 class="section-title">OUR SERVICES</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-4">
+                    <div class="service-card neon-border">
+                        <div class="service-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="service-title">Web Development</h3>
+                        <ul class="service-list">
+                            <li>Custom Website Design</li>
+                            <li>E-Commerce Solutions</li>
+                            <li>Web Application Development</li>
+                            <li>CMS Implementation</li>
+                            <li>API Integration</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="service-card neon-border">
+                        <div class="service-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="service-title">Mobile Solutions</h3>
+                        <ul class="service-list">
+                            <li>iOS & Android App Development</li>
+                            <li>Cross-Platform Applications</li>
+                            <li>Progressive Web Apps</li>
+                            <li>App UI/UX Design</li>
+                            <li>App Store Optimization</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="service-card neon-border">
+                        <div class="service-icon">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <h3 class="service-title">Digital Marketing</h3>
+                        <ul class="service-list">
+                            <li>SEO & Content Strategy</li>
+                            <li>Social Media Management</li>
+                            <li>PPC Advertising</li>
+                            <li>Email Marketing</li>
+                            <li>Analytics & Reporting</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="service-card neon-border">
+                        <div class="service-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3 class="service-title">Branding & Design</h3>
+                        <ul class="service-list">
+                            <li>Logo & Visual Identity</li>
+                            <li>Brand Strategy</li>
+                            <li>Print & Digital Collateral</li>
+                            <li>Motion Graphics</li>
+                            <li>3D Visualization</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="service-card neon-border">
+                        <div class="service-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="service-title">Business Solutions</h3>
+                        <ul class="service-list">
+                            <li>CRM Implementation</li>
+                            <li>Automation Systems</li>
+                            <li>Data Visualization</li>
+                            <li>Business Intelligence</li>
+                            <li>Process Optimization</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="service-card neon-border">
+                        <div class="service-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="service-title">Emerging Tech</h3>
+                        <ul class="service-list">
+                            <li>Blockchain Solutions</li>
+                            <li>AR/VR Experiences</li>
+                            <li>AI & Machine Learning</li>
+                            <li>IoT Integration</li>
+                            <li>Voice Interface Design</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="service-card neon-border">
+                        <div class="service-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="service-title">ONLINE SERVICES</h3>
+                        <ul class="service-list">
+                            <li>E-VISA</li>
+                            <li>E-ID</li>
+                            <li>E-PASSPORT</li>
+                            <li>RESEARCH</li>
+                            <li>PROJECTS</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section">
+        <div class="container">
+            <h2 class="section-title">OUR PORTFOLIO</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-4">
+                    <div class="portfolio-item neon-border">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 1" class="portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h3>E-Commerce Platform</h3>
+                            <span class="portfolio-tag">Web Development</span>
+                            <span class="portfolio-tag">E-Commerce</span>
+                            <a href="#" class="btn btn-sm btn-custom mt-3">View Case Study</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="portfolio-item neon-border">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 2" class="portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h3>Mobile Banking App</h3>
+                            <span class="portfolio-tag">Mobile App</span>
+                            <span class="portfolio-tag">FinTech</span>
+                            <a href="#" class="btn btn-sm btn-custom mt-3">View Case Study</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="portfolio-item neon-border">
+                        <img src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 3" class="portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h3>Brand Identity</h3>
+                            <span class="portfolio-tag">Branding</span>
+                            <span class="portfolio-tag">Design</span>
+                            <a href="#" class="btn btn-sm btn-custom mt-3">View Case Study</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="portfolio-item neon-border">
+                        <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 4" class="portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h3>Digital Marketing</h3>
+                            <span class="portfolio-tag">SEO</span>
+                            <span class="portfolio-tag">Social Media</span>
+                            <a href="#" class="btn btn-sm btn-custom mt-3">View Case Study</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="portfolio-item neon-border">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 5" class="portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h3>Corporate Website</h3>
+                            <span class="portfolio-tag">Web Design</span>
+                            <span class="portfolio-tag">Development</span>
+                            <a href="#" class="btn btn-sm btn-custom mt-3">View Case Study</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="portfolio-item neon-border">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 6" class="portfolio-img">
+                        <div class="portfolio-overlay">
+                            <h3>AR Shopping Experience</h3>
+                            <span class="portfolio-tag">Augmented Reality</span>
+                            <span class="portfolio-tag">Mobile App</span>
+                            <a href="#" class="btn btn-sm btn-custom mt-3">View Case Study</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="section">
+        <div class="container">
+            <h2 class="section-title">CLIENT TESTIMONIALS</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="testimonial-card neon-border">
+                        <div class="testimonial-text">
+                            Working with Neon Digital transformed our online presence. Their team delivered beyond our expectations with a website that perfectly represents our brand.
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sarah Johnson" class="author-img">
+                            <div>
+                                <h5>Sarah Johnson</h5>
+                                <p class="text-muted">CEO, TechSolutions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card neon-border">
+                        <div class="testimonial-text">
+                            The mobile app developed by Neon Digital has significantly increased our customer engagement. Their attention to detail is remarkable.
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen" class="author-img">
+                            <div>
+                                <h5>Michael Chen</h5>
+                                <p class="text-muted">Founder, RetailGo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card neon-border">
+                        <div class="testimonial-text">
+                            Their digital marketing strategy doubled our online leads in just three months. Truly a game-changer for our business.
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Emma Rodriguez" class="author-img">
+                            <div>
+                                <h5>Emma Rodriguez</h5>
+                                <p class="text-muted">Marketing Director, StyleHub</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">GET IN TOUCH</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <form class="contact-form">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="subject" placeholder="What's this about?">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="5" placeholder="Your message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-custom">Send Message</button>
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4>Email</h4>
+                                <p>hello@neondigital.agency</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4>Location</h4>
+                                <p>San Francisco, CA</p>
+                            </div>
+                        </div>
+                        
+                        <h4 class="mt-5">Follow Us</h4>
+                        <div class="social-icons">
+                            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">NEON DIGITAL</div>
+            <div class="footer-links">
+                <a href="#hero" class="footer-link">Home</a>
+                <a href="#about" class="footer-link">About</a>
+                <a href="#services" class="footer-link">Services</a>
+                <a href="#portfolio" class="footer-link">Portfolio</a>
+                <a href="#contact" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Blog</a>
+                <a href="#" class="footer-link">Careers</a>
+            </div>
+            <p class="copyright">© 2023 Neon Digital Agency. All rights reserved. | Designed by Amjad Amin</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 3D Digital Network for About Section
+        function initAboutNetwork() {
+            const container = document.getElementById('about-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ 
+                antialias: true, 
+                alpha: true,
+                powerPreference: "high-performance"
+            });
+            
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            container.appendChild(renderer.domElement);
+            
+            // Add lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0x00f7ff, 1);
+            directionalLight.position.set(5, 10, 7);
+            scene.add(directionalLight);
+            
+            const pointLight = new THREE.PointLight(0xff2d75, 1, 50);
+            pointLight.position.set(-5, 5, -5);
+            scene.add(pointLight);
+            
+            // Create digital network nodes
+            const nodes = [];
+            const nodeGeometry = new THREE.SphereGeometry(0.5, 16, 16);
+            const nodeMaterial = new THREE.MeshPhongMaterial({
+                color: 0x00f7ff,
+                emissive: 0x00a1ff,
+                emissiveIntensity: 0.5,
+                shininess: 100
+            });
+            
+            // Create connecting lines
+            const lines = [];
+            const lineMaterial = new THREE.LineBasicMaterial({ 
+                color: 0x00f7ff,
+                transparent: true,
+                opacity: 0.6
+            });
+            
+            // Create 20 nodes in a network pattern
+            for (let i = 0; i < 20; i++) {
+                const node = new THREE.Mesh(nodeGeometry, nodeMaterial.clone());
+                
+                // Position nodes in a spherical pattern
+                const radius = 5 + Math.random() * 5;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos((Math.random() * 2) - 1);
+                
+                node.position.x = radius * Math.sin(phi) * Math.cos(theta);
+                node.position.y = radius * Math.sin(phi) * Math.sin(theta);
+                node.position.z = radius * Math.cos(phi);
+                
+                scene.add(node);
+                nodes.push(node);
+                
+                // Create connections to other nodes
+                if (i > 0) {
+                    const connections = Math.floor(Math.random() * 3) + 1;
+                    for (let j = 0; j < connections; j++) {
+                        const targetIndex = Math.floor(Math.random() * i);
+                        const lineGeometry = new THREE.BufferGeometry().setFromPoints([
+                            nodes[targetIndex].position,
+                            node.position
+                        ]);
+                        const line = new THREE.Line(lineGeometry, lineMaterial);
+                        scene.add(line);
+                        lines.push(line);
+                    }
+                }
+            }
+            
+            // Add a glowing central node
+            const centerNode = new THREE.Mesh(
+                new THREE.SphereGeometry(1, 32, 32),
+                new THREE.MeshPhongMaterial({
+                    color: 0xffffff,
+                    emissive: 0x00f7ff,
+                    emissiveIntensity: 0.8,
+                    shininess: 100
+                })
+            );
+            scene.add(centerNode);
+            
+            // Position camera with orbit controls
+            camera.position.z = 15;
+            
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableZoom = false;
+            controls.enablePan = false;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.5;
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                // Pulsate nodes
+                nodes.forEach((node, index) => {
+                    const scale = 1 + Math.sin(Date.now() * 0.001 + index) * 0.2;
+                    node.scale.set(scale, scale, scale);
+                    
+                    // Make some nodes change color
+                    if (index % 4 === 0) {
+                        node.material.color.setHSL(
+                            (Date.now() * 0.0005 + index * 0.1) % 1,
+                            0.8,
+                            0.7
+                        );
+                    }
+                });
+                
+                // Pulsate center node
+                centerNode.scale.set(
+                    1 + Math.sin(Date.now() * 0.002) * 0.1,
+                    1 + Math.sin(Date.now() * 0.002) * 0.1,
+                    1 + Math.sin(Date.now() * 0.002) * 0.1
+                );
+                
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            
+            // Handle container resize
+            new ResizeObserver(() => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }).observe(container);
+            
+            animate();
+        }
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initAboutNetwork();
+            
+            // Add scroll animation to sections
+            const sections = document.querySelectorAll('section');
+            
+            window.addEventListener('scroll', () => {
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    const scrollPosition = window.pageYOffset + window.innerHeight / 1.3;
+                    
+                    if (scrollPosition > sectionTop) {
+                        section.style.opacity = '1';
+                        section.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+            
+            // Trigger initial animation
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(50px)';
+                section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            });
+            
+            // Trigger hero animation immediately
+            document.getElementById('hero').style.opacity = '1';
+        });
+    </script>
+</body>
+</html>
